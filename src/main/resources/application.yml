@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: carpark
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/carpark
+    username: root
+    password: sanechka_04.09
