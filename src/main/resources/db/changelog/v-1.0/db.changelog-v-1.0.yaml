@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/v-1.0/01-create-tbl_vehicle.sql
   - include:
       file: db/changelog/v-1.0/02-fill-tbl_vehicle.sql
+  - include:
+      file: db/changelog/v-1.0/03-vehicle_number-add-column.sql
+  - include:
+      file: db/changelog/v-1.0/04-create-tbl_brand.sql

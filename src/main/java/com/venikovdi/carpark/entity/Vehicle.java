@@ -1,11 +1,10 @@
 package com.venikovdi.carpark.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
@@ -15,6 +14,7 @@ public class Vehicle {
 
     @Id
     @Column(name = "vehicle_id")
+    @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
     @Column(name = "price")
@@ -28,4 +28,11 @@ public class Vehicle {
 
     @Column(name = "color")
     private String color;
+
+    @Column(name = "number")
+    private String number;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 }
