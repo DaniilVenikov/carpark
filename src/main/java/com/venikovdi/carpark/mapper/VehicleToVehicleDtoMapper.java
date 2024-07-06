@@ -10,6 +10,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING)
 public interface VehicleToVehicleDtoMapper {
 
-    @Mapping(target = "brandId", source = "brand.id")
+    @Mapping(target = "brandTitle", source = "brand.title")
     VehicleDto map(Vehicle vehicle);
 }

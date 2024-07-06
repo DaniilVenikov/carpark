@@ -8,6 +8,6 @@ public record VehicleDto(
         Integer releaseYear,
         String color,
         String number,
-        Integer brandId
+        String brandTitle
 ) {
 }
