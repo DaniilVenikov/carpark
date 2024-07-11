@@ -1,3 +1,10 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
 spring:
   application:
     name: carpark
@@ -14,3 +21,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+  jackson:
+    default-property-inclusion: non_null

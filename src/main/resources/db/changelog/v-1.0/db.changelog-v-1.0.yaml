@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/v-1.0/03-vehicle_number-add-column.sql
   - include:
       file: db/changelog/v-1.0/04-create-tbl_brand.sql
+  - include:
+      file: db/changelog/v-1.0/05-vehicle_number-column-change.sql
