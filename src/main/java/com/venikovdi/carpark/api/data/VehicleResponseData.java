@@ -14,7 +14,7 @@ public record VehicleResponseData(
         @NonNull String color,
         @JsonProperty("number")
         @NonNull String number,
-        @JsonProperty("brand_title")
-        @NonNull String brandTitle
+        @JsonProperty("brand_id")
+        @NonNull Integer brandId
 ) {
 }
