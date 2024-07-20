@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -11,7 +15,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(schema = "carpark", name = "tbl_vehicle")
 public class Vehicle {
-
     @Id
     @Column(name = "vehicle_id")
     @GeneratedValue(strategy = IDENTITY)
@@ -35,4 +38,14 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    @ManyToMany(cascade = {MERGE, PERSIST})
+    @JoinTable(schema = "carpark", name = "tbl_driver_vehicle",
+    joinColumns = @JoinColumn(name = "vehicle_id"),
+    inverseJoinColumns = @JoinColumn(name = "driver_id"))
+    private Set<Driver> drivers;
 }

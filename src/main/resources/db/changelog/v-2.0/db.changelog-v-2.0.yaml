@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/v-2.0/01-create-tbl_enterprise.sql
+  - include:
+      file: db/changelog/v-2.0/02-create-tbl_driver.sql
+  - include:
+      file: db/changelog/v-2.0/03-create-tbl_driver_vehicle.sql

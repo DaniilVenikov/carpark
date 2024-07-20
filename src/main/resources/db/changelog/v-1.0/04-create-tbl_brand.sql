@@ -16,7 +16,8 @@ create table carpark.tbl_brand
 insert into carpark.tbl_brand (title, type, volume_tank, lifting_capacity, number_seats)
 values ('Lada', 'CAR', 2, 600, 5),
        ('Chery', 'CAR', 3, 850, 7),
-       ('MAZ', 'BUS', 10, 2000, 35);
+       ('MAZ', 'BUS', 10, 2000, 35),
+       ('KIA', 'CAR', 2, 900, 5);
 
 alter table carpark.tbl_vehicle
     add column brand_id int;
@@ -35,3 +36,19 @@ where tv.vehicle_id = 2;
 update carpark.tbl_vehicle tv
 set tv.brand_id = 1
 where tv.vehicle_id = 3;
+
+update carpark.tbl_vehicle tv
+set tv.brand_id = 1
+where tv.vehicle_id = 4;
+
+update carpark.tbl_vehicle tv
+set tv.brand_id = 3
+where tv.vehicle_id = 5;
+
+update carpark.tbl_vehicle tv
+set tv.brand_id = 4
+where tv.vehicle_id = 6;
+
+update carpark.tbl_vehicle tv
+set tv.brand_id = 2
+where tv.vehicle_id = 7;

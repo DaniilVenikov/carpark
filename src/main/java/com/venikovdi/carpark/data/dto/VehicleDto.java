@@ -1,11 +1,15 @@
 package com.venikovdi.carpark.data.dto;
 
+import java.util.List;
+
 public record VehicleDto(
         Integer price,
         Integer mileage,
         Integer releaseYear,
         String color,
         String number,
-        Integer brandId
+        Integer brandId,
+        Integer enterpriseId,
+        List<Integer> drivers
 ) {
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 
-import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
@@ -37,6 +37,6 @@ public class Brand {
     @Column(name = "number_seats")
     private Integer numberSeats;
 
-    @OneToMany(mappedBy = "brand", cascade = ALL)
+    @OneToMany(mappedBy = "brand", cascade = MERGE)
     private Collection<Vehicle> vehicles;
 }
