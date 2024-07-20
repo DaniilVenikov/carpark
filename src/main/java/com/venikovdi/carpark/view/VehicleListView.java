@@ -44,8 +44,7 @@ public class VehicleListView extends VerticalLayout {
     private Grid<VehicleDto> getGrid() {
         Grid<VehicleDto> grid = new Grid<>();
         grid.setItems(vehicleService.getAll());
-        grid.addColumn(VehicleDto::id).setHeader("Vehicle id");
-        grid.addColumn(VehicleDto::brandTitle).setHeader("Brand title");
+        grid.addColumn(VehicleDto::brandId).setHeader("Brand id");
         grid.addColumn(VehicleDto::price).setHeader("Vehicle price");
         grid.addColumn(VehicleDto::mileage).setHeader("Vehicle mileage");
         grid.addColumn(VehicleDto::releaseYear).setHeader("Vehicle release year");

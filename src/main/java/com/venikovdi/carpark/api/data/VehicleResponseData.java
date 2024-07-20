@@ -21,6 +21,6 @@ public record VehicleResponseData(
         @JsonProperty("enterprise_id")
         Integer enterpriseId,
         @JsonProperty("drivers")
-        List<String> drivers
+        List<Integer> drivers
 ) {
 }
