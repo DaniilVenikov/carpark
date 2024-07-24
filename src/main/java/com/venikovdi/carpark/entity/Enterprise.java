@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.CascadeType.MERGE;
@@ -30,4 +31,7 @@ public class Enterprise {
 
     @OneToMany(mappedBy = "enterprise", cascade = MERGE)
     private Collection<Driver> drivers;
+
+    @ManyToMany(mappedBy = "enterprises")
+    private Set<Manager> managers;
 }

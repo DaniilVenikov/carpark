@@ -45,7 +45,7 @@ public class Vehicle {
 
     @ManyToMany(cascade = {MERGE, PERSIST})
     @JoinTable(schema = "carpark", name = "tbl_driver_vehicle",
-    joinColumns = @JoinColumn(name = "vehicle_id"),
-    inverseJoinColumns = @JoinColumn(name = "driver_id"))
+            joinColumns = @JoinColumn(name = "vehicle_id"),
+            inverseJoinColumns = @JoinColumn(name = "driver_id"))
     private Set<Driver> drivers;
 }
