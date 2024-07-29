@@ -3,7 +3,8 @@ package com.venikovdi.carpark.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,23 +30,21 @@ public class SecurityConfig {
         return new CustomUserDetailService();
     }
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
+    public AuthenticationManager authenticationManager() {
+        var authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authProvider);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("carpark/api/**").authenticated();
-                    authorize.anyRequest().permitAll();
-                })
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("carpark/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
                 .logout((logout) -> logout.logoutUrl("/carpark/api/logout"))
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
