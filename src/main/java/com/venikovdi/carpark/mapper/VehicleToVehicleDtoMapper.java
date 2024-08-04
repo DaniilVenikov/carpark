@@ -15,6 +15,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 public interface VehicleToVehicleDtoMapper {
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "mileage", source = "mileage")
     @Mapping(target = "releaseYear", source = "releaseYear")
@@ -32,6 +33,9 @@ public interface VehicleToVehicleDtoMapper {
         return enterprise == null ? null : enterprise.getId();
     }
     default List<Integer> mapDrivers(Set<Driver> drivers) {
+        if(drivers == null) {
+            return List.of();
+        }
         return drivers
                 .stream()
                 .map(Driver::getId)

@@ -2,6 +2,7 @@ package com.venikovdi.carpark.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -32,6 +34,11 @@ public class GlobalExceptionHandlerControllerAdvice extends ResponseEntityExcept
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException ex) {
         return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.NotFound.class)
+    public ResponseEntity<String> handleNotFoundException(ChangeSetPersister.NotFoundException ex) {
+        return new ResponseEntity<>("Resource with key %s not found", HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)

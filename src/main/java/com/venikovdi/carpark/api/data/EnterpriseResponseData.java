@@ -6,6 +6,8 @@ import lombok.NonNull;
 import java.util.List;
 
 public record EnterpriseResponseData(
+        @JsonProperty("id")
+        @NonNull String id,
         @JsonProperty("title")
         @NonNull String title,
         @JsonProperty("city")
