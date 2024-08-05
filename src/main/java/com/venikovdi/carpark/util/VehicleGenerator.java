@@ -35,45 +35,39 @@ public class VehicleGenerator {
             @Option(required = true) List<Integer> enterpriseIds,
             @ShellOption(defaultValue = "0") int vehiclesCount
     ) {
-        List<Vehicle> vehicles =
-                vehiclesCount == 0 ? generateVehicle(enterpriseIds) : generateListVehicle(enterpriseIds, vehiclesCount);
+        List<Vehicle> vehicles = enterpriseIds.stream()
+                .map(id -> generateVehiclesForEnterprise(id, vehiclesCount))
+                .flatMap(List::stream)
+                .toList();
+
         vehicleRepository.saveAll(vehicles);
-
     }
 
-    private List<Vehicle> generateListVehicle(List<Integer> enterpriseIds, int vehiclesCount) {
+    private List<Vehicle> generateVehiclesForEnterprise(int enterpriseId, int vehiclesCount) {
         List<Vehicle> vehicles = new ArrayList<>();
-        for (int id : enterpriseIds) {
-            Optional<Enterprise> enterprise = enterpriseRepository.findById(id);
-            if (enterprise.isPresent()) {
-                List<Driver> drivers = (List<Driver>) enterprise.get().getDrivers();
 
-                for (int vehicleCount = 0; vehicleCount < vehiclesCount; vehicleCount++) {
-                    Vehicle vehicle = generateOneVehicle(enterprise.get());
+        enterpriseRepository.findById(enterpriseId)
+                .ifPresent(enterprise -> {
+                    List<Driver> drivers = new ArrayList<>(enterprise.getDrivers());
 
-                    if (!drivers.isEmpty() && (vehicleCount != 0 && vehicleCount % 10 == 0)) {
-                        vehicle.setDrivers(Set.of(drivers.get(0)));
+                    for (int i = 0; i < (vehiclesCount > 0 ? vehiclesCount : 1); i++) {
+                        Vehicle vehicle = generateOneVehicle(enterprise);
+
+                        if (!drivers.isEmpty() && (i != 0 && i % 10 == 0)) {
+                            vehicle.setDrivers(Set.of(drivers.get(0)));
+                        }
+
+                        vehicles.add(vehicle);
                     }
-                    vehicles.add(vehicle);
-                }
-            }
-        }
-        return vehicles;
-    }
+                });
 
-    private List<Vehicle> generateVehicle(List<Integer> enterpriseIds) {
-        List<Vehicle> vehicles = new ArrayList<>();
-        for (int id : enterpriseIds){
-            Optional<Enterprise> enterprise = enterpriseRepository.findById(id);
-            enterprise.ifPresent(value -> vehicles.add(generateOneVehicle(value)));
-        }
         return vehicles;
     }
 
     private Vehicle generateOneVehicle(Enterprise enterprise) {
-        Vehicle vehicle = enhancedRandom.nextObject(Vehicle.class, "id","brand", "enterprise", "drivers", "number");
+        Vehicle vehicle = enhancedRandom.nextObject(Vehicle.class, "id", "brand", "enterprise", "drivers", "number");
         vehicle.setEnterprise(enterprise);
-
         return vehicle;
     }
+
 }
