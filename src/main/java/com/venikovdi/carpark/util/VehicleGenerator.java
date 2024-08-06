@@ -3,6 +3,7 @@ package com.venikovdi.carpark.util;
 import com.venikovdi.carpark.entity.Driver;
 import com.venikovdi.carpark.entity.Enterprise;
 import com.venikovdi.carpark.entity.Vehicle;
+import com.venikovdi.carpark.repository.DriverRepository;
 import com.venikovdi.carpark.repository.EnterpriseRepository;
 import com.venikovdi.carpark.repository.VehicleRepository;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
@@ -20,12 +21,15 @@ public class VehicleGenerator {
 
     private final VehicleRepository vehicleRepository;
     private final EnterpriseRepository enterpriseRepository;
+    private final DriverRepository driverRepository;
     private final EnhancedRandom enhancedRandom;
 
     public VehicleGenerator(VehicleRepository vehicleRepository,
-                            EnterpriseRepository enterpriseRepository) {
+                            EnterpriseRepository enterpriseRepository,
+                            DriverRepository driverRepository) {
         this.vehicleRepository = vehicleRepository;
         this.enterpriseRepository = enterpriseRepository;
+        this.driverRepository = driverRepository;
         this.enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandom();
     }
 
@@ -48,13 +52,11 @@ public class VehicleGenerator {
 
         enterpriseRepository.findById(enterpriseId)
                 .ifPresent(enterprise -> {
-                    List<Driver> drivers = new ArrayList<>(enterprise.getDrivers());
-
                     for (int i = 0; i < (vehiclesCount > 0 ? vehiclesCount : 1); i++) {
                         Vehicle vehicle = generateOneVehicle(enterprise);
 
-                        if (!drivers.isEmpty() && (i != 0 && i % 10 == 0)) {
-                            vehicle.setDrivers(Set.of(drivers.get(0)));
+                        if ((i != 0 && i % 10 == 0)) {
+                            vehicle.setDrivers(Set.of(generateActiveDriver(enterprise, vehicle)));
                         }
 
                         vehicles.add(vehicle);
@@ -68,6 +70,16 @@ public class VehicleGenerator {
         Vehicle vehicle = enhancedRandom.nextObject(Vehicle.class, "id", "brand", "enterprise", "drivers", "number");
         vehicle.setEnterprise(enterprise);
         return vehicle;
+    }
+
+    private Driver generateActiveDriver(Enterprise enterprise, Vehicle vehicle) {
+        Driver driver = enhancedRandom.nextObject(Driver.class, "isActive", "enterprise", "vehicles");
+        driver.setIsActive(true);
+        driver.setEnterprise(enterprise);
+        driver.setVehicles(Set.of(vehicle));
+
+        driver = driverRepository.save(driver);
+        return driver;
     }
 
 }
