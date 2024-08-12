@@ -10,6 +10,9 @@ import com.venikovdi.carpark.mapper.VehiclePostRequestDataToVehicleDtoMapper;
 import com.venikovdi.carpark.mapper.VehiclePutRequestDataToVehicleDtoMapper;
 import com.venikovdi.carpark.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -31,15 +33,17 @@ public class VehicleController implements VehicleApi {
 
     @Override
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    public ResponseEntity<Collection<VehicleResponseData>> get() {
+    public ResponseEntity<Page<VehicleResponseData>> getAll(Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         return ResponseEntity.ok(
-                vehicleService.getAllVehiclesForManager(username)
-                .stream()
-                .map(vehicleDtoToVehicleResponseDataMapper::map)
-                .toList());
+                vehicleService.getAllVehiclesForManager(username,
+                                PageRequest.of(
+                                        pageable.getPageNumber(),
+                                        pageable.getPageSize()
+                                ))
+                        .map(vehicleDtoToVehicleResponseDataMapper::map));
     }
 
     @Override
