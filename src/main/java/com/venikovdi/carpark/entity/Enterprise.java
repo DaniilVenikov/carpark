@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class Enterprise {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "timezone")
+    private ZoneId timezone;
 
     @OneToMany(mappedBy = "enterprise", cascade = MERGE)
     private Collection<Vehicle> vehicles;

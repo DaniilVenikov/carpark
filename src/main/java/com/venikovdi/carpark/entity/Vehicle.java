@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.MERGE;
@@ -35,6 +37,9 @@ public class Vehicle {
     @Column(name = "number")
     private String number;
 
+    @Column(name = "purchase_datetime;")
+    private ZonedDateTime purchaseDatetime;
+
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
@@ -48,4 +53,7 @@ public class Vehicle {
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "driver_id"))
     private Set<Driver> drivers;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<GPS> gps;
 }

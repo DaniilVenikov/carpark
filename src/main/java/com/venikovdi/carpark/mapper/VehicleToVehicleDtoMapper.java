@@ -7,7 +7,9 @@ import com.venikovdi.carpark.entity.Enterprise;
 import com.venikovdi.carpark.entity.Vehicle;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ public interface VehicleToVehicleDtoMapper {
     @Mapping(target = "brandId", source = "brand")
     @Mapping(target = "enterpriseId", source = "enterprise")
     @Mapping(target = "drivers", source = "drivers")
+    @Mapping(target = "purchaseDatetime", source = "vehicle", qualifiedByName = "purchaseDatetime")
     VehicleDto map(Vehicle vehicle);
 
     default Integer mapBrand(Brand brand) {
@@ -40,5 +43,9 @@ public interface VehicleToVehicleDtoMapper {
                 .stream()
                 .map(Driver::getId)
                 .toList();
+    }
+    @Named("purchaseDatetime")
+    default ZonedDateTime purchaseDatetime(Vehicle vehicle) {
+        return vehicle.getPurchaseDatetime().withZoneSameInstant(vehicle.getEnterprise().getTimezone());
     }
 }

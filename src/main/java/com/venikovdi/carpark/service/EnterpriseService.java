@@ -25,6 +25,7 @@ public class EnterpriseService {
     private final EnterpriseToEnterpriseDtoMapper enterpriseToEnterpriseDtoMapper;
     private final EnterpriseDtoToEnterpriseMapper enterpriseDtoToEnterpriseMapper;
 
+    @Transactional(readOnly = true)
     public Collection<EnterpriseDto> getEnterpriseForManager(String username) {
         Manager manager = managerRepository.findByUsername(username).orElseThrow();
 

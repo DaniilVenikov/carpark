@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +28,7 @@ public class VehicleService {
     private final VehicleToVehicleDtoMapper vehicleToVehicleDtoMapper;
     private final VehicleDtoToVehicleMapper vehicleDtoToVehicleMapper;
 
+    @Transactional(readOnly = true)
     public List<VehicleDto> getAll() {
         return vehicleRepository.findAll()
                 .stream()
@@ -53,6 +56,7 @@ public class VehicleService {
     @Transactional
     public VehicleDto add(VehicleDto vehicleDto) {
         var vehicleEntity = vehicleDtoToVehicleMapper.map(vehicleDto);
+        vehicleEntity.setPurchaseDatetime(ZonedDateTime.now(ZoneOffset.UTC));
         return vehicleToVehicleDtoMapper.map(vehicleRepository.save(vehicleEntity));
     }
 
