@@ -56,4 +56,7 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle")
     private List<GPS> gps;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<Drive> drives;
 }
