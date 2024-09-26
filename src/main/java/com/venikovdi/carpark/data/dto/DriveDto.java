@@ -3,8 +3,8 @@ package com.venikovdi.carpark.data.dto;
 import java.time.LocalDateTime;
 
 public record DriveDto(
-        LocalDateTime start,
-        LocalDateTime end,
+        LocalDateTime startingTime,
+        LocalDateTime endTime,
         Integer vehicleId
 ) {
 }

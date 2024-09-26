@@ -1,5 +1,6 @@
 package com.venikovdi.carpark.api;
 
+import com.venikovdi.carpark.api.data.DriveResponseData;
 import com.venikovdi.carpark.api.data.GPSResponseData;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,8 +37,8 @@ public interface DriveApi {
             mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
             schema = @Schema(implementation = ProblemDetail.class)
     ))
-    @GetMapping("{vehicle_id}")
-    ResponseEntity<Collection<GPSResponseData>> getDrive(
+    @GetMapping("/gps/{vehicle_id}")
+    ResponseEntity<Collection<GPSResponseData>> getDriveGps(
             @PathVariable(name = "vehicle_id", required = false)
             @NotNull Integer vehicleId,
             @RequestParam(name = "range_start")
@@ -45,5 +46,18 @@ public interface DriveApi {
             OffsetDateTime rangeStart,
             @RequestParam(name = "range_end")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            OffsetDateTime rangeEnd);
+            OffsetDateTime rangeEnd
+    );
+
+    @GetMapping("{vehicle_id}")
+    ResponseEntity<Collection<DriveResponseData>> getDrive(
+            @PathVariable(name = "vehicle_id", required = false)
+            @NotNull Integer vehicleId,
+            @RequestParam(name = "range_start")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            OffsetDateTime rangeStart,
+            @RequestParam(name = "range_end")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            OffsetDateTime rangeEnd
+    );
 }

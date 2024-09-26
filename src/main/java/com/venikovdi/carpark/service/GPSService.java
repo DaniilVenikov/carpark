@@ -1,12 +1,12 @@
 package com.venikovdi.carpark.service;
 
 import com.venikovdi.carpark.data.dto.GPSDto;
-import com.venikovdi.carpark.data.dto.GPSFilter;
 import com.venikovdi.carpark.mapper.GPSToGPSDtoMapper;
 import com.venikovdi.carpark.repository.GPSRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,9 +15,9 @@ public class GPSService {
     private final GPSRepository gpsRepository;
     private final GPSToGPSDtoMapper gpsToGPSDtoMapper;
 
-    public List<GPSDto> getVehicleCoordinates(Integer vehicleId, GPSFilter gpsFilter){
+    public List<GPSDto> getGPSData(Integer vehicleId, LocalDateTime rangeStart, LocalDateTime rangeEnd){
         return gpsRepository
-                .getGPS(vehicleId, gpsFilter.rangeStart().toLocalDateTime(), gpsFilter.rangeEnd().toLocalDateTime())
+                .getGPS(vehicleId, rangeStart, rangeEnd)
                 .stream()
                 .map(gpsToGPSDtoMapper::map)
                 .toList();
