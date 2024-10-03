@@ -11,5 +11,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface DriveToDriveDtoMapper {
 
     @Mapping(target = "vehicleId", expression = "java(drive.getVehicle().getId())")
+    @Mapping(target = "startingTime", source = "start")
+    @Mapping(target = "endTime", source = "end")
     DriveDto map(Drive drive);
 }

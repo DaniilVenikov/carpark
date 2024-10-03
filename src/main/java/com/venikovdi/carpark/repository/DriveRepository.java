@@ -9,7 +9,14 @@ import java.util.List;
 
 @Repository
 public interface DriveRepository extends JpaRepository<Drive, Long> {
+
     List<Drive> findAllByVehicleIdAndStartGreaterThanEqualAndEndLessThanEqual(Integer vehicleId,
                                                                               LocalDateTime rangeStart,
                                                                               LocalDateTime rangeEnd);
+
+    List<Drive> findAllByVehicleId(Integer vehicleId);
+
+    List<Drive> findAllByVehicleIdAndStartAfter(Integer vehicleId, LocalDateTime startDate);
+
+    List<Drive> findAllByStartAfter(LocalDateTime startDate);
 }
